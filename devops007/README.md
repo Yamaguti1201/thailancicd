@@ -1,6 +1,14 @@
-# Projeto DevOps - Exercício Prático CI/CD com Containers (Site 4 - Djotage)
+# Projeto DevOps - Exercício Prático CI/CD com Containers (devops007)
 
-Este projeto implementa a arquitetura completa do exercício prático de DevOps:
+**Instituição:** Centro Universitário Geraldo Di Biase (UGB)  
+**Disciplina:** Melhores Práticas DevOps  
+**Dupla:** Dyama (Yamaguti) & Djotage  
+**Domínio:** `devops007.ugbio.com.br`  
+
+---
+
+## 🏗️ Arquitetura do Projeto
+
 - **Código-Fonte (Python Flask)**: API REST conectada a banco de dados relacional MySQL.
 - **GitHub Actions**: Pipeline de CI/CD que constrói a imagem Docker da API e a publica no GitHub Packages (GHCR).
 - **Servidor (Docker Compose + Makefile)**:
@@ -13,27 +21,27 @@ Este projeto implementa a arquitetura completa do exercício prático de DevOps:
 ## 📁 Estrutura de Arquivos
 
 ```text
-djotage/
-├── .env                  # Variáveis de ambiente locais (Site 4)
+devops007/
+├── .env                  # Variáveis locais de ambiente (não vai para o Git)
 ├── .env-example          # Modelo de variáveis de ambiente
 ├── docker-compose.yml    # Orquestração dos 3 containers (db, api, nginx)
-├── Makefile              # Comandos de automação do servidor
+├── Makefile              # Automação de deploy, build, testes e logs
 ├── README.md             # Esta documentação
 ├── api/
 │   ├── .dockerignore
-│   ├── Dockerfile        # Build da imagem Python 3.12 Slim + Gunicorn
-│   ├── requirements.txt  # Dependências (Flask, mysql-connector-python, gunicorn)
+│   ├── Dockerfile        # Imagem Python 3.12 Slim + Gunicorn
+│   ├── requirements.txt  # Flask, mysql-connector-python, gunicorn
 │   └── app.py            # API REST com rotas /, /health, /mensagens
 ├── nginx/
-│   └── default.conf      # Configuração de Proxy Reverso Nginx -> API:5000
+│   └── default.conf      # Proxy Reverso Nginx -> API:5000
 └── .github/
     └── workflows/
-        └── ci-cd.yml     # Workflow de CI/CD para GitHub Actions -> GHCR
+        └── ci-cd.yml     # Workflow de CI/CD para GitHub Packages (GHCR)
 ```
 
 ---
 
-## 🚀 Como Executar Localmente (Teste Rápido)
+## 🚀 Como Executar Localmente
 
 1. **Subir os serviços construindo localmente**:
    ```bash
@@ -63,10 +71,10 @@ djotage/
 
 ---
 
-## 🌐 Deploy em Produção (Servidor / Azure)
+## 🌐 Deploy no Servidor (Azure VM)
 
 1. Preencha o arquivo `.env` com suas credenciais do GitHub Packages:
-   - `GHCR_USER=seu-usuario`
+   - `GHCR_USER=Yamaguti1201`
    - `GHCR_TOKEN=seu-personal-access-token`
    - `DOMAIN=devops007.ugbio.com.br`
 
@@ -74,4 +82,4 @@ djotage/
    ```bash
    make deploy
    ```
-   O comando irá se autenticar no GHCR, baixar a versão mais recente da imagem e subir os serviços.
+   O comando irá se autenticar no GHCR, baixar a versão mais recente da imagem e subir os serviços integrados.

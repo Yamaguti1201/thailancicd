@@ -2,7 +2,7 @@
 
 **Instituição:** Centro Universitário Geraldo Di Biase (UGB)  
 **Disciplina:** Melhores Práticas DevOps  
-**Dupla:** Yamaguti (Dyama) e Djotage  
+**Dupla:** Dyama (Yamaguti) & Djotage  
 **Domínio Alocado:** `devops007.ugbio.com.br`  
 
 ---
@@ -21,40 +21,25 @@ Implementação prática de um pipeline completo de CI/CD e orquestração de co
 
 ## 📂 Organização do Repositório
 
-O repositório está estruturado com pastas separadas para os membros da dupla, contendo ambientes isolados e funcionais:
+O projeto unificado da dupla está centralizado na pasta **`devops007`**:
 
 ```text
 thailancicd/
 ├── .gitignore                # Regras de segurança (ignora .env, caches e temporários)
-├── README.md                 # Visão geral e avaliação do projeto
+├── README.md                 # Documentação principal para avaliação do professor
 │
-├── dyama/                    # Configurações e código de Dyama (Yamaguti)
-│   ├── .env-example          # Modelo de configuração de ambiente
-│   ├── docker-compose.yml    # Orquestração (MySQL, API Flask, Nginx)
-│   ├── Makefile              # Comandos para deploy, build, testes e logs
-│   ├── README.md             # Guia de execução específico
-│   ├── api/
-│   │   ├── app.py            # API REST Flask conectada ao MySQL
-│   │   ├── requirements.txt  # Dependências Python
-│   │   ├── Dockerfile        # Construção da imagem Docker
-│   │   └── .dockerignore
-│   ├── nginx/
-│   │   └── default.conf      # Configuração de Proxy Reverso Nginx
-│   └── .github/workflows/
-│       └── ci-cd.yml         # Workflow de CI/CD para GitHub Packages (GHCR)
-│
-└── djotage/                  # Configurações e código de Djotage
-    ├── .env-example          # Modelo de configuração de ambiente
+└── devops007/                # Projeto unificado da dupla (Dyama & Djotage)
+    ├── .env-example          # Modelo de configuração de ambiente (Site devops007)
     ├── docker-compose.yml    # Orquestração (MySQL, API Flask, Nginx)
     ├── Makefile              # Comandos para deploy, build, testes e logs
     ├── README.md             # Guia de execução específico
     ├── api/
     │   ├── app.py            # API REST Flask conectada ao MySQL
-    │   ├── requirements.txt  # Dependências Python
-    │   ├── Dockerfile        # Construção da imagem Docker
+    │   ├── requirements.txt  # Dependências Python (Flask, mysql-connector-python, gunicorn)
+    │   ├── Dockerfile        # Construção da imagem Docker (Python 3.12 Slim)
     │   └── .dockerignore
     ├── nginx/
-    │   └── default.conf      # Configuração de Proxy Reverso Nginx
+    │   └── default.conf      # Configuração de Proxy Reverso Nginx -> API
     └── .github/workflows/
         └── ci-cd.yml         # Workflow de CI/CD para GitHub Packages (GHCR)
 ```
@@ -63,7 +48,10 @@ thailancicd/
 
 ## 🚀 Como Executar e Avaliar
 
-Entre na pasta correspondente (`cd dyama` ou `cd djotage`):
+Entre na pasta do projeto:
+```bash
+cd devops007
+```
 
 1. **Copiar o modelo de ambiente**:
    ```bash

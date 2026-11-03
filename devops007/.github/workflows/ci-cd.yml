@@ -7,8 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # Altere para o seu repositório/imagem no GHCR, ex: ghcr.io/<seu-usuario>/ugb-devops-api
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/ugb-devops-api-dyama
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/devops007-api
 
 jobs:
   build-and-push:
@@ -35,7 +34,9 @@ jobs:
       - name: Preparar contexto de build da API
         id: prep
         run: |
-          if [ -d "./api" ]; then
+          if [ -d "./devops007/api" ]; then
+            echo "context=./devops007/api" >> "$GITHUB_OUTPUT"
+          elif [ -d "./api" ]; then
             echo "context=./api" >> "$GITHUB_OUTPUT"
           else
             echo "context=." >> "$GITHUB_OUTPUT"

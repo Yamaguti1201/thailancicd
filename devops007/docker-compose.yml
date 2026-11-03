@@ -3,19 +3,19 @@ services:
   # Banco de Dados MySQL (DB no diagrama)
   db:
     image: mysql:8.4
-    container_name: site4-dyama-db
+    container_name: devops007-db
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${DB_NAME:-devopsdb_site4}
-      MYSQL_USER: ${DB_USER:-devops_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-devops123_site4}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root123_site4}
+      MYSQL_DATABASE: ${DB_NAME:-devops007_db}
+      MYSQL_USER: ${DB_USER:-devops007_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-devops007_pass123}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-devops007_root123}
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - backend-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "${DB_USER:-devops_user}", "-p${DB_PASSWORD:-devops123_site4}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "${DB_USER:-devops007_user}", "-p${DB_PASSWORD:-devops007_pass123}"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -27,16 +27,16 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
-    container_name: site4-dyama-api
+    container_name: devops007-api
     restart: unless-stopped
     pull_policy: ${PULL_POLICY:-always}
     environment:
       DB_HOST: db
       DB_PORT: 3306
-      DB_NAME: ${DB_NAME:-devopsdb_site4}
-      DB_USER: ${DB_USER:-devops_user}
-      DB_PASSWORD: ${DB_PASSWORD:-devops123_site4}
-      STUDENT_NAME: "Dyama"
+      DB_NAME: ${DB_NAME:-devops007_db}
+      DB_USER: ${DB_USER:-devops007_user}
+      DB_PASSWORD: ${DB_PASSWORD:-devops007_pass123}
+      INTEGRANTES: "Dyama (Yamaguti) & Djotage"
       DOMAIN: ${DOMAIN:-devops007.ugbio.com.br}
     depends_on:
       db:
@@ -44,10 +44,10 @@ services:
     networks:
       - backend-network
 
-  # Proxy Reverso NGINX (NGINX no diagrama - porta 80 DNS Cloudflare)
+  # Proxy Reverso NGINX (NGINX no diagrama - porta 80 Cloudflare DNS)
   nginx:
     image: nginx:alpine
-    container_name: site4-dyama-nginx
+    container_name: devops007-nginx
     restart: unless-stopped
     ports:
       - "${HOST_PORT:-80}:80"
@@ -60,9 +60,9 @@ services:
 
 volumes:
   mysql_data:
-    name: site4_dyama_mysql_data
+    name: devops007_mysql_data
 
 networks:
   backend-network:
-    name: site4_dyama_network
+    name: devops007_network
     driver: bridge

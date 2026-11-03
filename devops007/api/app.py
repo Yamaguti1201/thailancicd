@@ -6,17 +6,17 @@ from mysql.connector import Error
 
 app = Flask(__name__)
 
-STUDENT_NAME = os.getenv("STUDENT_NAME", "Djotage")
 SITE_DOMAIN = os.getenv("DOMAIN", "devops007.ugbio.com.br")
+INTEGRANTES = os.getenv("INTEGRANTES", "Dyama (Yamaguti) & Djotage")
 
 def get_db_connection(retries=15, delay=2):
     for attempt in range(retries):
         try:
             return mysql.connector.connect(
                 host=os.getenv("DB_HOST", "db"),
-                user=os.getenv("DB_USER", "devops_user"),
-                password=os.getenv("DB_PASSWORD", "devops123_site4"),
-                database=os.getenv("DB_NAME", "devopsdb_site4"),
+                user=os.getenv("DB_USER", "devops007_user"),
+                password=os.getenv("DB_PASSWORD", "devops007_pass123"),
+                database=os.getenv("DB_NAME", "devops007_db"),
                 port=int(os.getenv("DB_PORT", "3306")),
                 connection_timeout=5,
             )
@@ -45,7 +45,7 @@ def initialize_database():
         if count == 0:
             cursor.execute(
                 "INSERT INTO messages (author, content) VALUES (%s, %s)",
-                (STUDENT_NAME, f"Inicialização da API devops007 - Integrado com MySQL e Nginx!")
+                ("Sistema DevOps007", f"API DevOps007 inicializada com sucesso por {INTEGRANTES}! Conectada ao MySQL.")
             )
             connection.commit()
 
@@ -54,7 +54,7 @@ def initialize_database():
     except Exception as e:
         print(f"Aviso durante inicialização do banco: {e}")
 
-# Executa inicialização
+# Inicializa banco de dados
 try:
     initialize_database()
 except Exception as e:
@@ -65,8 +65,8 @@ def home():
     return jsonify({
         "status": "online",
         "disciplina": "DevOps - UGB",
-        "exercicio": "CI/CD com Containers (Site 4)",
-        "aluno": STUDENT_NAME,
+        "projeto": "CI/CD com Containers (devops007)",
+        "integrantes": INTEGRANTES,
         "dominio": SITE_DOMAIN,
         "arquitetura": {
             "dns": "Cloudflare HTTP 80",
@@ -75,7 +75,7 @@ def home():
             "banco": "MySQL 8.4"
         },
         "endpoints": [
-            {"metodo": "GET", "rota": "/", "descricao": "Informações gerais da API"},
+            {"metodo": "GET", "rota": "/", "descricao": "Informações gerais da aplicação"},
             {"metodo": "GET", "rota": "/health", "descricao": "Healthcheck da API e conexão MySQL"},
             {"metodo": "GET", "rota": "/mensagens", "descricao": "Lista mensagens cadastradas no MySQL"},
             {"metodo": "POST", "rota": "/mensagens", "descricao": "Cadastra nova mensagem (JSON: {'author': '...', 'content': '...'})"}
@@ -91,8 +91,8 @@ def health():
             "status": "healthy",
             "service": "api",
             "database": "connected",
-            "aluno": STUDENT_NAME,
-            "site": SITE_DOMAIN
+            "integrantes": INTEGRANTES,
+            "dominio": SITE_DOMAIN
         }), 200
     except Error as exc:
         return jsonify({
@@ -114,7 +114,7 @@ def list_messages():
         for row in rows:
             if row.get("created_at"):
                 row["created_at"] = row["created_at"].isoformat()
-        return jsonify({"aluno": STUDENT_NAME, "total": len(rows), "mensagens": rows}), 200
+        return jsonify({"projeto": "devops007", "total": len(rows), "mensagens": rows}), 200
     except Exception as e:
         return jsonify({"error": "Erro ao consultar mensagens no MySQL", "details": str(e)}), 500
 
@@ -122,7 +122,7 @@ def list_messages():
 def create_message():
     data = request.get_json(silent=True) or {}
     content = data.get("content")
-    author = data.get("author", STUDENT_NAME)
+    author = data.get("author", "Dyama/Djotage")
     
     if not isinstance(content, str) or not content.strip():
         return jsonify({"error": "O campo 'content' é obrigatório e não pode ser vazio."}), 400

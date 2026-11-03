@@ -10,10 +10,10 @@ export
 deploy: login pull up
 	@echo ""
 	@echo "========================================="
-	@echo " Deploy concluído com sucesso! (Site 4)"
+	@echo " Deploy concluído com sucesso! (devops007)"
 	@echo " Imagem: $(IMAGE_NAME):$(VERSION)"
 	@echo " Domínio: $(DOMAIN)"
-	@echo " Aluno: Djotage"
+	@echo " Dupla: Dyama (Yamaguti) & Djotage"
 	@echo "========================================="
 
 login:
@@ -57,6 +57,9 @@ test:
 	@echo ""
 	@echo "2. Rota principal (/):"
 	@curl -s http://localhost:$(HOST_PORT)/ || echo "Erro ao testar /"
+	@echo ""
+	@echo "3. Mensagens cadastradas (/mensagens):"
+	@curl -s http://localhost:$(HOST_PORT)/mensagens || echo "Erro ao testar /mensagens"
 	@echo ""
 
 clean:
