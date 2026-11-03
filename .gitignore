@@ -1,0 +1,61 @@
+# Segredos e Variáveis de Ambiente (Boas Práticas de Segurança DevOps)
+.env
+.env.*
+!.env-example
+!.env.example
+*.pem
+*.key
+*.cert
+
+# Python e Ambientes Virtuais
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.env/
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Logs e Dados Temporários de Containers
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+data/
+mysql_data/
+
+# IDEs e Editores
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Base de aula anterior (subir apenas o necessário para avaliação)
+server/
+site-devops/
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+desktop.ini

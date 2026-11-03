@@ -1,0 +1,68 @@
+services:
+
+  # Banco de Dados MySQL (DB no diagrama)
+  db:
+    image: mysql:8.4
+    container_name: site4-dyama-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-devopsdb_site4}
+      MYSQL_USER: ${DB_USER:-devops_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-devops123_site4}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root123_site4}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "${DB_USER:-devops_user}", "-p${DB_PASSWORD:-devops123_site4}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # Aplicação Python Flask (IMAGEM API no diagrama)
+  api:
+    image: ${IMAGE_NAME}:${VERSION}
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: site4-dyama-api
+    restart: unless-stopped
+    pull_policy: ${PULL_POLICY:-always}
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-devopsdb_site4}
+      DB_USER: ${DB_USER:-devops_user}
+      DB_PASSWORD: ${DB_PASSWORD:-devops123_site4}
+      STUDENT_NAME: "Dyama"
+      DOMAIN: ${DOMAIN:-devops007.ugbio.com.br}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend-network
+
+  # Proxy Reverso NGINX (NGINX no diagrama - porta 80 DNS Cloudflare)
+  nginx:
+    image: nginx:alpine
+    container_name: site4-dyama-nginx
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:-80}:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api
+    networks:
+      - backend-network
+
+volumes:
+  mysql_data:
+    name: site4_dyama_mysql_data
+
+networks:
+  backend-network:
+    name: site4_dyama_network
+    driver: bridge
