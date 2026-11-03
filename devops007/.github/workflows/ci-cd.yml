@@ -7,7 +7,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/devops007-api
 
 jobs:
   build-and-push:
@@ -31,9 +30,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Preparar contexto de build da API
+      - name: Preparar variáveis e contexto de build da API
         id: prep
         run: |
+          OWNER_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "image=ghcr.io/${OWNER_LC}/devops007-api" >> "$GITHUB_OUTPUT"
           if [ -d "./devops007/api" ]; then
             echo "context=./devops007/api" >> "$GITHUB_OUTPUT"
           elif [ -d "./api" ]; then
@@ -48,5 +49,5 @@ jobs:
           context: ${{ steps.prep.outputs.context }}
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ steps.prep.outputs.image }}:latest
+            ${{ steps.prep.outputs.image }}:${{ github.sha }}
